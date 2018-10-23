@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import pdb
 
 # accepts input in [ batch x channels x shape ] format
 class Attention(nn.Module):
@@ -13,15 +14,15 @@ class Attention(nn.Module):
         self.dropout = dropout
 
     def forward(self, queries, keys, values, mask=None):
-        attention = torch.bmm(keys.permute(0,2,1), queries) / self.in_channels**0.5
+        attention = torch.bmm(queries, keys.permute(0,2,1)) / self.in_channels**0.5
         if mask is not None:
-            attention = attention.masked_fill(mask == 0, -1e9)
+            attention = attention.masked_fill(mask, -1e9)
         
         attention = F.softmax(attention, dim=1)
-        if dropout is not None:
+        if self.dropout is not None:
             attention = F.dropout(attention, self.dropout)
 
-        output = torch.bmm(values, attention)
+        output = torch.bmm(attention, values)
         return output
 
 # adds positional encodings
@@ -33,4 +34,8 @@ class PositionalEncoding(nn.Module):
         positional_encodings = torch.sin(torch.ger(denominator, numerator))
         return input_ + positional_encodings
  
+
+if __name__ == '__main__':
+    print("please implement unittests")
+
 
