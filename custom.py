@@ -1,7 +1,6 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import pdb
 
 # accepts input in [ batch x channels x shape ] format
 class Attention(nn.Module):
@@ -18,7 +17,7 @@ class Attention(nn.Module):
         if mask is not None:
             attention = attention.masked_fill(mask, -1e9)
         
-        attention = F.softmax(attention, dim=1)
+        attention = F.softmax(attention, dim=-1)
         if self.dropout is not None:
             attention = F.dropout(attention, self.dropout)
 
