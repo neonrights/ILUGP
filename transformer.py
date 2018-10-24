@@ -5,7 +5,7 @@ import torch.nn.functional as F
 import custom
 
 
-class Encoder(nn.Module):
+class EncoderLayer(nn.Module):
     def __init__(self, in_channels, heads, dropout=None):
         super().__init__()
         self.in_channels = in_channels
@@ -24,7 +24,7 @@ class Encoder(nn.Module):
         return outputs 
 
 
-class Decoder(nn.Module):
+class DecoderLayer(nn.Module):
     def __init__(self, in_channels, heads, dropout=None):
         super().__init__()
         self.in_channels = in_channels
